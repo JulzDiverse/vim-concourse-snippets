@@ -1,0 +1,119 @@
+snippet ccjob
+	- name: ${1:name}
+		plan:
+		- get: ${2:resource}
+		- task: ${3:name}
+			config:
+				platform: ${4:linux}
+				image_resource:
+					type: ${5:docker-image}
+					source:
+						repository: ${6:ubuntu}
+				run:
+					path: ${7:sh}
+					args: [${8:path}]
+
+snippet cctask
+	- task: ${1:name}
+		config:
+			platform: ${2:linux}
+			image_resource:
+				type: ${3:docker-image}
+				source:
+					repository: ${4:ubuntu}
+			run:
+				path: ${5:sh}
+				args: [${6:path}]
+
+snippet cctaskf
+	- task: ${1:name}
+		file: ${3:file}.yml
+
+snippet cctaskfile
+	---
+	platform: linux
+
+	image_resource:
+		type: ${1:docker-image}
+		source:
+			repository: ${2:ubuntu}
+
+	params:
+		${3:key}: ${4:value}
+
+	inputs:
+	- name: ${5:name}
+
+	outputs:
+	- name: ${6:name}
+
+	run:
+		path: ${7:path}
+
+snippet ccget
+	- get: ${1:name}
+		trigger: ${2:false}
+		passed: [${3:}]
+
+snippet ccgit
+	- name: ${1:source-name}
+		type: git
+		source:
+			uri: git@github.com:${2:author}/${3:repo}.git
+			branch: ${4:master}
+			private_key: ${5:key}
+
+snippet ccgitput
+	- put: ${1:source}
+		params: {repository: ${2:some-other-repo}}
+
+snippet cctimeinterval
+	- name: ${1:name}
+		type: time
+		source: {interval: ${2:5m}}
+
+snippet cctimerange
+	- name: ${1:name}
+		type: time
+		source:
+			start: ${2:h}:${3:m} ${4:AM/PM}
+			stop: ${5:h}:${6:m} ${7:AM/PM}
+			location: ${8:Asia/Sakhalin}
+
+snippet ccdocker
+	- name: ${1:name}
+		type: docker-image
+		source:
+			repository: ${2:repo}
+			username: ${3:user}
+			password: ${4:pw}
+
+snippet ccpool
+	- name: ${1:name}
+		type: pool
+		source:
+			uri: ${2:uri}
+			branch: ${3:master}
+			pool: ${4:pool}
+			private_key: ${5:key}
+
+snippet ccslackr
+	- name: slack-notification
+		type: docker-image
+		source:
+			repository: cfcommunity/slack-notification-resource
+			tag: latest
+
+snippet ccslack
+	- name: ${1:name}
+		type: slack-notification
+		source:
+			url: ${2:url}
+
+snippet ccslackput
+	- put: slack-alert
+		params:
+			channel: '#${1:channel}'
+			text_file: ${2:textfile}
+			text: |
+				${3:text}
